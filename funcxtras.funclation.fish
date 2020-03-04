@@ -1,4 +1,3 @@
-# Defined in - @ line 2
 function funclate
 	if test (count $argv) -eq 0
         echo "Usage: funclate [prefix, first function or collation name] [function names]..."
@@ -73,60 +72,5 @@ function funcdump
         end
     end
 end
-function funcreview
-	set -g binary_deps ls sl nonexist
-    set -g variable_deps lat lng nonexist
-    set -g version_needed 3 1 0
-    set argv test
-    #status features
-    #read -n 1 -P 'Press a key'
-    #source $argv[1]
-    set version_this (string split . $version)
-    if test "$version_this[1]" -lt "$version_needed[1]" -o "$version_this[2]" -lt "$version_needed[2]"
-        if status -i
-            echo "$argv[1]: shell version $version too low, needs at least $version_needed[1].$version_needed[2]"
-        end
-        #curl -s http://$h_messaging
-    end
-    funcdeps $argv
-    funcvdeps $argv
-    set -ge binary_deps
-    set -ge variable_deps
-    set -ge version_needed
-end
-function funcdeps
-	if test (count $binary_deps) -gt 1
-        for x in $binary_deps
-            if test -z (find $PATH -name $x -executable)
-                set -a missing_bins $x
-            end
-        end
-    end
-    if test -n "$missing_bins"
-        if status -i
-            echo "$argv[1]: missing binaries: $missing_bins"
-        end
-
-    end
-end
-function funcvdeps
-	if test (count $variable_deps) -ge 1
-        for x in $variable_deps
-            if set -q $x
-                echo $x
-                set -a missing_vars $x
-            end
-        end
-    end
-    if test -n "$missing_vars"
-        if status -i
-            echo "$argv[1]: missing universal variables: $missing_vars"
-        end
-
-    end
-end
 funcsave funclate
 funcsave funcdump
-funcsave funcreview
-funcsave funcdeps
-funcsave funcvdeps
